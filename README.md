@@ -1,4 +1,6 @@
 Immaculate Grid MLB SQL Project
+
+
 Project Overview
 This project is focused on creating a SQL-based solution to enhance performance in the Immaculate Grid game for Major League Baseball (MLB). The Immaculate Grid game challenges players to fill a 3x3 grid with MLB players who match the criteria for each cell, aiming to use the most obscure players to achieve the lowest rarity score possible. The goal of this project is to develop efficient SQL queries to pull data on obscure MLB players, thereby minimizing the rarity score.
 
