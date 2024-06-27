@@ -199,3 +199,24 @@ left join award a on b.playerid=a.playerid and b.yearid=a.yearid
 left join people p on b.playerid=p.playerid
 where teamid in (select teamid from team1ids) and awardid in (select awardid from award)
 order by b.yearid;
+
+#TEAM AND BORN OUTSIDE 50 STATES AND DC
+	
+with cte as (select franchid, count(yearid)
+from teams
+where name = 'Miami Marlins'
+group by franchid),
+
+team1ids as (
+select teamid, count(yearid)
+from teams
+where franchid in (select franchid from cte)
+group by teamid)
+
+select namefirst, namelast, teamid, Birthcountry, debut, sum(G) as sum_of_games
+from batting
+left join people using (playerid)
+where teamid in (select teamid from team1ids) and birthcountry <> 'USA'
+group by namefirst, namelast, teamid, Birthcountry,debut
+having sum(G)<5
+order by debut; 
