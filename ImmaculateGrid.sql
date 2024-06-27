@@ -175,3 +175,27 @@ where playerid in (select playerid from relevantplayers)
 group by namefirst, namelast, playerid, debut
 having sum(SO)>=2000
 order by debut;
+
+#AWARDS WITH A TEAM
+
+with award as (select playerid, awardid,yearid from awardsplayers 
+where awardid = 'Silver Slugger'
+order by yearid desc),
+
+cte as (select franchid, count(yearid)
+from teams
+where name = 'Pittsburgh Pirates'
+group by franchid),
+
+team1ids as (
+select teamid, count(yearid)
+from teams
+where franchid in (select franchid from cte)
+group by teamid)
+
+select p.namefirst, p.namelast, b.teamid, b.yearid, a.awardid
+from batting b
+left join award a on b.playerid=a.playerid and b.yearid=a.yearid
+left join people p on b.playerid=p.playerid
+where teamid in (select teamid from team1ids) and awardid in (select awardid from award)
+order by b.yearid;
